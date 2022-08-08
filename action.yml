@@ -28,6 +28,10 @@ inputs:
     required: false
     default: "npx size-limit --json"
     description: "The script used to generate size-limit results"
+  skip_no_diff_record:
+    required: false
+    default: false
+    description: "This will skip the output for those records who's delta diff is 0%"
 runs:
   using: 'node12'
   main: 'dist/index.js'
