@@ -148,14 +148,17 @@ class SizeLimit {
       const baseResult = base[name] || EmptyResult;
       const currentResult = current[name] || EmptyResult;
       const diff = ((currentResult.size - baseResult.size) / baseResult.size) * 100;
-      if (config?.skipNoDiffRecord && diff === 0) return [];
+      if (config?.skipNoDiffRecord && diff === 0) return undefined;
       if (isSize) {
         return this.formatSizeResult(name, baseResult, currentResult);
       }
       return this.formatTimeResult(name, baseResult, currentResult);
     });
-
-    return [header, ...fields];
+    const filteredFields = fields.filter(d => !!d);
+    if (filteredFields.length)
+      return [header, ...filteredFields];
+    else
+      return [['No changes found from last updates.']]
   }
 }
 export default SizeLimit;
