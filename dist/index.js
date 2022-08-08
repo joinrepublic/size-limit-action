@@ -10688,13 +10688,17 @@ class SizeLimit {
             const currentResult = current[name] || EmptyResult;
             const diff = ((currentResult.size - baseResult.size) / baseResult.size) * 100;
             if ((config === null || config === void 0 ? void 0 : config.skipNoDiffRecord) && diff === 0)
-                return [];
+                return undefined;
             if (isSize) {
                 return this.formatSizeResult(name, baseResult, currentResult);
             }
             return this.formatTimeResult(name, baseResult, currentResult);
         });
-        return [header, ...fields];
+        const filteredFields = fields.filter(d => !!d);
+        if (filteredFields.length)
+            return [header, ...filteredFields];
+        else
+            return [['No changes found from last updates.']];
     }
 }
 SizeLimit.SIZE_RESULTS_HEADER = ["Path", "Size"];
