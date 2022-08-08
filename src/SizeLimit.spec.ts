@@ -95,15 +95,19 @@ describe("SizeLimit", () => {
         total: 2.7680084375000003
       }
     };
-
     expect(limit.formatResults(base, current, { skipNoDiffRecord: true })).toEqual([
-      SizeLimit.TIME_RESULTS_HEADER,
-      []
+      ["No changes found from last updates."]
     ]);
 
-    expect(limit.formatResults(base, current, { skipNoDiffRecord: false })).not.toEqual([
+    expect(limit.formatResults(base, current, { skipNoDiffRecord: false })).toEqual([
       SizeLimit.TIME_RESULTS_HEADER,
-      []
+      [
+        "dist/index.js",
+        "108.29 KB (0%)",
+        "2.6 s (+18.47% 🔺)",
+        "203 ms (+97.94% 🔺)",
+        "2.8 s"
+      ]
     ]);
   });
 
