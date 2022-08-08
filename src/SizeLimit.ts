@@ -134,7 +134,8 @@ class SizeLimit {
 
   formatResults(
     base: { [name: string]: IResult },
-    current: { [name: string]: IResult }
+    current: { [name: string]: IResult },
+    config?: { skipNoDiffRecord: boolean }
   ): Array<Array<string>> {
     const names = [...new Set([...Object.keys(base), ...Object.keys(current)])];
     const isSize = names.some(
@@ -146,7 +147,8 @@ class SizeLimit {
     const fields = names.map((name: string) => {
       const baseResult = base[name] || EmptyResult;
       const currentResult = current[name] || EmptyResult;
-
+      const diff = ((currentResult.size - baseResult.size) / baseResult.size) * 100;
+      if (config?.skipNoDiffRecord && diff === 0) return [];
       if (isSize) {
         return this.formatSizeResult(name, baseResult, currentResult);
       }

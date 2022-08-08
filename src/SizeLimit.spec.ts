@@ -75,6 +75,38 @@ describe("SizeLimit", () => {
     ]);
   });
 
+  test("should skip size-limit results for no diff", () => {
+    const limit = new SizeLimit();
+    const base = {
+      "dist/index.js": {
+        name: "dist/index.js",
+        size: 110894,
+        running: 0.10210999999999999,
+        loading: 2.1658984375,
+        total: 2.2680084375000003
+      }
+    };
+    const current = {
+      "dist/index.js": {
+        name: "dist/index.js",
+        size: 110894,
+        running: 0.20210999999999999,
+        loading: 2.5658984375,
+        total: 2.7680084375000003
+      }
+    };
+
+    expect(limit.formatResults(base, current, { skipNoDiffRecord: true })).toEqual([
+      SizeLimit.TIME_RESULTS_HEADER,
+      []
+    ]);
+
+    expect(limit.formatResults(base, current, { skipNoDiffRecord: false })).not.toEqual([
+      SizeLimit.TIME_RESULTS_HEADER,
+      []
+    ]);
+  });
+
   test("should format size-limit without times results", () => {
     const limit = new SizeLimit();
     const base = {

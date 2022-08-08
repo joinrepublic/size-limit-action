@@ -47,6 +47,8 @@ async function run() {
     const directory = getInput("directory") || process.cwd();
     const windowsVerbatimArguments =
       getInput("windows_verbatim_arguments") === "true" ? true : false;
+    const skipNoDiffRecord =
+      getInput("skip_no_diff_record") === "true" ? true : false;
     const octokit = new GitHub(token);
     const term = new Term();
     const limit = new SizeLimit();
@@ -85,7 +87,7 @@ async function run() {
 
     const body = [
       SIZE_LIMIT_HEADING,
-      table(limit.formatResults(base, current))
+      table(limit.formatResults(base, current, { skipNoDiffRecord }))
     ].join("\r\n");
 
     const sizeLimitComment = await fetchPreviousComment(octokit, repo, pr);
