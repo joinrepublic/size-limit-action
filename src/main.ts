@@ -1,4 +1,4 @@
-import { getInput, setFailed } from "@actions/core";
+import { getInput, setFailed, debug } from "@actions/core";
 import { context, GitHub } from "@actions/github";
 // @ts-ignore
 import table from "markdown-table";
@@ -77,7 +77,9 @@ async function run() {
 
     try {
       base = limit.parseResults(baseOutput);
+      debug(`BASE OUTPUT: ${baseOutput}`);
       current = limit.parseResults(output);
+      debug(`BASE OUTPUT: ${output}`);
     } catch (error) {
       console.log(
         "Error parsing size-limit output. The output should be a json."
